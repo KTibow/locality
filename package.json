@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@xenova/transformers": "git+https://github.com/xenova/transformers.js#v3",
+    "onnxruntime-web": "1.19.0-dev.20240515-2a17958b34",
+    "vite": "^5.2.11"
+  }
+}

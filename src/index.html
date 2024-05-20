@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+        font: inherit;
+        border: solid 0px currentColor;
+      }
+      :root {
+        font-family: Inter, system-ui, sans-serif;
+        background-color: rgb(20 19 20);
+        color: rgb(230 225 227);
+        color-scheme: dark;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-height: 100dvh;
+
+        padding: 1rem;
+        margin: 0;
+      }
+
+      .messages {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.25rem;
+      }
+      .messages .user {
+        background-color: rgb(85 63 93);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+
+        align-self: start;
+      }
+      .messages .assistant {
+        background-color: rgb(28 27 29);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        white-space: pre-wrap;
+
+        align-self: end;
+        margin-top: 0.75rem;
+      }
+      button,
+      input {
+        background-color: rgb(28 27 29);
+        padding: 0.75rem 0.5rem;
+        border-radius: 0.5rem;
+
+        margin-top: auto;
+      }
+    </style>
+    <title>Locality</title>
+  </head>
+  <body>
+    <button id="button1">Open model</button>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
