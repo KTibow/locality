@@ -6,8 +6,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@xenova/transformers": "github:xenova/transformers.js#v3",
-    "onnxruntime-web": "1.19.0-dev.20240515-2a17958b34",
-    "vite": "^5.2.13"
+    "@huggingface/transformers": "3.0.0-alpha.15",
+    "onnxruntime-web": "1.19.2",
+    "vite": "^5.4.6"
   }
 }

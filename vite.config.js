@@ -4,6 +4,7 @@ export default defineConfig({
   root: "./src",
   publicDir: "../public",
   appType: "mpa",
+  base: "./",
   server: {
     headers: {
       "cross-origin-opener-policy": "same-origin",
@@ -13,5 +14,8 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
+  },
+  worker: {
+    format: "es",
   },
 });

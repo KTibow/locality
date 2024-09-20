@@ -1,4 +1,22 @@
 import { createGeneratorPipe } from "./_queue";
+import W from "./worker.js?worker";
+import SW from "./sw.js?url";
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(SW)
+      .then((registration) => {
+        console.debug(
+          "Service Worker registered successfully:",
+          registration.scope
+        );
+      })
+      .catch((error) => {
+        console.debug("Service Worker registration failed:", error);
+      });
+  });
+}
 
 const getBuffer = async () => {
   const [fileH] = await window.showOpenFilePicker();
@@ -14,7 +32,7 @@ button1.addEventListener("click", async () => {
 });
 
 const initWorker = (buffer) => {
-  const worker = new Worker("./worker.js", { type: "module" });
+  const worker = new W();
 
   worker.postMessage({ type: "init", buffer }, [buffer]);
   const go = () =>

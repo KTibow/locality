@@ -2,13 +2,19 @@ import {
   Qwen2ForCausalLM,
   PretrainedConfig,
   AutoTokenizer,
-} from "@xenova/transformers";
-import { InferenceSession, env } from "onnxruntime-web/webgpu";
+} from "@huggingface/transformers";
+
+const loadONNX = async () => {
+  return await import("./shaken-onnx.js");
+};
 
 let context;
 
 self.onmessage = async (event) => {
+  const { env, InferenceSession } = await loadONNX();
+
   const { type } = event.data;
+  console.log(event, event.data);
 
   if (type == "init") {
     const buffer = event.data.buffer;
@@ -21,7 +27,7 @@ self.onmessage = async (event) => {
 
     console.log("loading tokenizer...");
     const tokenizer = await AutoTokenizer.from_pretrained(
-      "Qwen/Qwen2-0.5B-Instruct"
+      "Qwen/Qwen2-1.5B-Instruct"
     );
     console.log("loading model...");
     const model = new Qwen2ForCausalLM(
@@ -31,14 +37,14 @@ self.onmessage = async (event) => {
         bos_token_id: 151643,
         eos_token_id: 151645,
         hidden_act: "silu",
-        hidden_size: 896,
+        hidden_size: 1536,
         initializer_range: 0.02,
-        intermediate_size: 4864,
+        intermediate_size: 8960,
         max_position_embeddings: 32768,
-        max_window_layers: 24,
+        max_window_layers: 28,
         model_type: "qwen2",
-        num_attention_heads: 14,
-        num_hidden_layers: 24,
+        num_attention_heads: 12,
+        num_hidden_layers: 28,
         num_key_value_heads: 2,
         rms_norm_eps: 1e-6,
         rope_theta: 1000000.0,
