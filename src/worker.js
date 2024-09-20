@@ -24,7 +24,7 @@ self.onmessage = async (event) => {
     }
 
     const session = await InferenceSession.create(buffer, {
-      executionProviders: ["webnn"],
+      executionProviders: ["webnn", "webgpu"],
     });
 
     console.log("loading tokenizer...");
