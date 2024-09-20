@@ -19,8 +19,6 @@ self.onmessage = async (event) => {
   if (type == "init") {
     const buffer = event.data.buffer;
 
-    env.wasm.wasmPaths = "./wasm/";
-
     const session = await InferenceSession.create(buffer, {
       executionProviders: ["webnn"],
     });
