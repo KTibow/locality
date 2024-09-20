@@ -1,8 +1,9 @@
 import {
+  Qwen2Tokenizer,
   Qwen2ForCausalLM,
   PretrainedConfig,
-  AutoTokenizer,
 } from "@huggingface/transformers";
+import tokenizerJSON from "./tokenizer.json";
 
 const loadONNX = async () => {
   return await import("./shaken-onnx.js");
@@ -19,14 +20,56 @@ self.onmessage = async (event) => {
   if (type == "init") {
     const buffer = event.data.buffer;
 
+    if (import.meta.env.DEV) {
+      env.wasm.wasmPaths = "./wasm/";
+    }
+
     const session = await InferenceSession.create(buffer, {
       executionProviders: ["webnn"],
     });
 
     console.log("loading tokenizer...");
-    const tokenizer = await AutoTokenizer.from_pretrained(
-      "Qwen/Qwen2-1.5B-Instruct"
-    );
+    const tokenizer = new Qwen2Tokenizer(tokenizerJSON, {
+      add_prefix_space: false,
+      added_tokens_decoder: {
+        151643: {
+          content: "<|endoftext|>",
+          lstrip: false,
+          normalized: false,
+          rstrip: false,
+          single_word: false,
+          special: true,
+        },
+        151644: {
+          content: "<|im_start|>",
+          lstrip: false,
+          normalized: false,
+          rstrip: false,
+          single_word: false,
+          special: true,
+        },
+        151645: {
+          content: "<|im_end|>",
+          lstrip: false,
+          normalized: false,
+          rstrip: false,
+          single_word: false,
+          special: true,
+        },
+      },
+      additional_special_tokens: ["<|im_start|>", "<|im_end|>"],
+      bos_token: null,
+      chat_template:
+        "{% for message in messages %}{% if loop.first and messages[0]['role'] != 'system' %}{{ '<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n' }}{% endif %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+      clean_up_tokenization_spaces: false,
+      eos_token: "<|im_end|>",
+      errors: "replace",
+      model_max_length: 32768,
+      pad_token: "<|endoftext|>",
+      split_special_tokens: false,
+      tokenizer_class: "Qwen2Tokenizer",
+      unk_token: null,
+    });
     console.log("loading model...");
     const model = new Qwen2ForCausalLM(
       new PretrainedConfig({
