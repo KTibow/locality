@@ -3,7 +3,6 @@ import {
   Qwen2ForCausalLM,
   PretrainedConfig,
 } from "@huggingface/transformers";
-import tokenizerJSON from "./tokenizer.json";
 
 const loadONNX = async () => {
   return await import("./shaken-onnx.js");
@@ -29,6 +28,7 @@ self.onmessage = async (event) => {
     });
 
     console.log("loading tokenizer...");
+    const { default: tokenizerJSON } = await import("./tokenizer.json");
     const tokenizer = new Qwen2Tokenizer(tokenizerJSON, {
       add_prefix_space: false,
       added_tokens_decoder: {
