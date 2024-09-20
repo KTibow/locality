@@ -31,7 +31,12 @@ jobs:
       - name: Run install
         run: pnpm install
       - name: Run sub
-        run: sed -i 's/return x && typeof x == "object" && x\.dataLocation;/return x instanceof ONNX.Tensor;/g' ./node_modules/@huggingface/transformers/dist/transformers.js
+        run: |
+          sed -i 's/return x && typeof x == "object" && x\.dataLocation;/return x instanceof ONNX.Tensor;/g' ./node_modules/@huggingface/transformers/dist/transformers.js
+          if ! grep -q 'return x instanceof ONNX.Tensor;' ./node_modules/@huggingface/transformers/dist/transformers.js; then
+            echo "Substitution failed"
+            exit 1
+          fi
       - name: Run build
         run: pnpm run build
       - name: Upload artifact
