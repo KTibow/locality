@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
       - name: Run sub
         run: |
-          sed -i 's/return x instanceof ONNX\.Tensor;/return x && typeof x == "object" && x\.dataLocation;/g' ./node_modules/@huggingface/transformers/dist/transformers.js
+          sed -i 's/return x instanceof ONNX\.Tensor;/return x \&\& typeof x == "object" \&\& x.dataLocation;/g' ./node_modules/@huggingface/transformers/dist/transformers.js
       - name: Run build
         run: pnpm run build
       - name: Upload artifact
