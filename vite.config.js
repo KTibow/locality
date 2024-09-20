@@ -4,7 +4,7 @@ export default defineConfig({
   root: "./src",
   publicDir: "../public",
   appType: "mpa",
-  base: "./",
+  base: "/locality/",
   server: {
     headers: {
       "cross-origin-opener-policy": "same-origin",
